@@ -1,0 +1,1166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Maharashtra Bus Seva</title>
+<link href="https://fonts.googleapis.com/css2?family=Tiro+Devanagari+Marathi&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{--or:#FF6B00;--orl:#FF8C3A;--bg:#1A0A00;--c1:#1E1008;--c2:#2A1A0C;--bd:#3D2510;
+  --tx:#F5E8D8;--mu:#9E7B5A;--gn:#22C55E;--rd:#EF4444;--gd:#F59E0B;--pu:#C084FC;--bl:#60A5FA;
+  --r:12px;--sh:0 8px 32px rgba(0,0,0,.5)}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--tx);min-height:100vh;
+  background-image:radial-gradient(ellipse 80% 50% at 20% -10%,rgba(255,107,0,.13) 0%,transparent 60%),
+  radial-gradient(ellipse 60% 40% at 80% 110%,rgba(255,107,0,.08) 0%,transparent 60%)}
+/* NAV */
+nav{display:flex;align-items:center;justify-content:space-between;padding:12px 32px;
+  border-bottom:1px solid var(--bd);position:sticky;top:0;z-index:100;
+  background:rgba(26,10,0,.93);backdrop-filter:blur(14px)}
+.brand{display:flex;align-items:center;gap:10px;cursor:pointer}
+.brand-icon{font-size:24px}
+.brand-text{font-family:'Space Mono',monospace;font-size:12px;font-weight:700;color:var(--or);line-height:1.2}
+.brand-sub{color:var(--mu);font-size:9px;letter-spacing:.1em;text-transform:uppercase}
+.nav-r{display:flex;gap:6px;align-items:center}
+.nb{padding:7px 15px;border-radius:8px;border:none;cursor:pointer;
+  font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;transition:.2s}
+.nb.ghost{background:transparent;color:var(--mu)}.nb.ghost:hover{color:var(--tx)}
+.nb.out{background:transparent;color:var(--or);border:1px solid var(--or)}.nb.out:hover{background:var(--or);color:#fff}
+.nb.sol{background:var(--or);color:#fff}.nb.sol:hover{background:var(--orl)}
+#ubar{color:var(--mu);font-size:13px;display:none;align-items:center;gap:8px}
+#ubar strong{color:var(--tx);font-size:13px}
+/* PAGES */
+.page{display:none;animation:fi .25s ease}.page.active{display:block}
+@keyframes fi{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+/* HERO */
+.hero{text-align:center;padding:56px 24px 36px}
+.hero-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(255,107,0,.12);
+  border:1px solid rgba(255,107,0,.3);border-radius:999px;padding:4px 13px;
+  font-size:11px;color:var(--or);margin-bottom:18px;letter-spacing:.05em}
+.hero h1{font-family:'Tiro Devanagari Marathi',serif;font-size:clamp(30px,5.5vw,62px);
+  font-weight:400;line-height:1.1;margin-bottom:8px;
+  background:linear-gradient(135deg,var(--tx) 0%,var(--or) 55%,var(--gd) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-sub{color:var(--mu);font-size:14px;margin-bottom:34px}
+/* SEARCH */
+.sc{background:var(--c1);border:1px solid var(--bd);border-radius:20px;
+  padding:24px 28px;max-width:820px;margin:0 auto 42px;box-shadow:var(--sh)}
+.sg{display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:12px;align-items:end}
+.fg{display:flex;flex-direction:column;gap:5px}
+.fg label,.ig label{font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--mu);font-weight:600}
+.fg select,.fg input,.ig input,.ig select,.ig textarea{
+  background:var(--c2);border:1px solid var(--bd);border-radius:var(--r);
+  padding:9px 12px;color:var(--tx);font-family:'DM Sans',sans-serif;font-size:13px;
+  outline:none;transition:.2s;appearance:none;-webkit-appearance:none;width:100%}
+.fg select,.ig select{
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='7'%3E%3Cpath d='M1 1l4.5 4.5L10 1' stroke='%239E7B5A' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 10px center;padding-right:28px}
+.fg select:focus,.fg input:focus,.ig input:focus,.ig select:focus,.ig textarea:focus{
+  border-color:var(--or);box-shadow:0 0 0 3px rgba(255,107,0,.12)}
+.fg select option,.ig select option{background:#1E1008;color:var(--tx)}
+/* STATS */
+.stats{display:grid;grid-template-columns:repeat(5,1fr);
+  border-top:1px solid var(--bd);border-bottom:1px solid var(--bd);margin-bottom:42px}
+.si{padding:20px 12px;text-align:center;border-right:1px solid var(--bd)}
+.si:last-child{border-right:none}
+.sn{font-family:'Space Mono',monospace;font-size:22px;font-weight:700;color:var(--or);margin-bottom:2px}
+.sl{font-size:10px;color:var(--mu);text-transform:uppercase;letter-spacing:.07em}
+/* BUTTONS */
+.btn{padding:9px 18px;border-radius:var(--r);border:none;cursor:pointer;
+  font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;
+  transition:.2s;display:inline-flex;align-items:center;gap:6px}
+.bp{background:var(--or);color:#fff}.bp:hover{background:var(--orl);transform:translateY(-1px)}
+.bp:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.bg2{background:transparent;color:var(--mu);border:1px solid var(--bd)}
+.bg2:hover{border-color:var(--tx);color:var(--tx)}
+.bd2{background:rgba(239,68,68,.15);color:var(--rd);border:1px solid rgba(239,68,68,.3)}
+.bd2:hover{background:rgba(239,68,68,.25)}
+.bpu{background:rgba(192,132,252,.15);color:var(--pu);border:1px solid rgba(192,132,252,.3)}
+.bpu:hover{background:rgba(192,132,252,.25)}
+.bsm{padding:6px 13px;font-size:12px}.bfw{width:100%;justify-content:center}
+/* SECTION */
+.sec{max-width:980px;margin:0 auto;padding:0 24px 52px}
+.sh{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:8px}
+.st{font-size:18px;font-weight:600}.sm{color:var(--mu);font-size:12px}
+/* TRIP CARDS */
+.tc{background:var(--c1);border:1px solid var(--bd);border-radius:16px;
+  padding:18px 20px;margin-bottom:12px;cursor:pointer;transition:.2s;position:relative;overflow:hidden}
+.tc::before{content:'';position:absolute;top:0;left:0;width:4px;height:100%;background:var(--or)}
+.tc:hover{border-color:rgba(255,107,0,.5);transform:translateY(-2px);box-shadow:var(--sh)}
+.tt{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:8px}
+.rg2{display:flex;align-items:center;gap:8px}
+.cy{font-size:19px;font-weight:700}.ar{color:var(--or);font-size:16px}
+.du{font-size:11px;color:var(--mu);margin-left:2px}
+.fg2{text-align:right}
+.fare{font-size:22px;font-weight:700;color:var(--or)}
+.fare span{font-size:11px;color:var(--mu);font-weight:400}
+.fare-you{font-size:12px;margin-top:2px}
+.tm{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px}
+.mi{display:flex;flex-direction:column;gap:2px}
+.ml{font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--mu)}
+.mv{font-size:12px;font-weight:500}
+/* BADGES */
+.badge{display:inline-flex;align-items:center;padding:3px 9px;border-radius:999px;font-size:10px;font-weight:600}
+.b-gn{background:rgba(34,197,94,.15);color:var(--gn);border:1px solid rgba(34,197,94,.3)}
+.b-rd{background:rgba(239,68,68,.15);color:var(--rd);border:1px solid rgba(239,68,68,.3)}
+.b-gd{background:rgba(245,158,11,.15);color:var(--gd);border:1px solid rgba(245,158,11,.3)}
+.b-or{background:rgba(255,107,0,.15);color:var(--or);border:1px solid rgba(255,107,0,.3)}
+.b-pu{background:rgba(192,132,252,.15);color:var(--pu);border:1px solid rgba(192,132,252,.3)}
+.b-bl{background:rgba(96,165,250,.15);color:var(--bl);border:1px solid rgba(96,165,250,.3)}
+.b-mu{background:rgba(158,123,90,.1);color:var(--mu);border:1px solid rgba(158,123,90,.2)}
+/* AUTH */
+.aw{max-width:460px;margin:48px auto;padding:0 24px}
+.ac{background:var(--c1);border:1px solid var(--bd);border-radius:20px;padding:32px}
+.at{font-size:20px;font-weight:700;margin-bottom:4px}
+.as{color:var(--mu);font-size:13px;margin-bottom:22px}
+.ig{display:flex;flex-direction:column;gap:5px;margin-bottom:12px}
+.ig label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--mu)}
+.aswitch{text-align:center;margin-top:16px;font-size:13px;color:var(--mu)}
+.aswitch a{color:var(--or);cursor:pointer;font-weight:600}
+.hint{margin-top:12px;padding:10px 12px;background:var(--c2);border-radius:8px;font-size:11px;color:var(--mu);line-height:1.7}
+.hint strong{color:var(--tx)}
+/* ALERTS */
+.alert{padding:10px 14px;border-radius:10px;font-size:12px;margin-bottom:12px}
+.aerr{background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.3);color:#FCA5A5}
+.aok{background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.3);color:#86EFAC}
+/* SEAT MODAL */
+.ov{position:fixed;inset:0;background:rgba(0,0,0,.8);display:flex;align-items:center;
+  justify-content:center;z-index:300;padding:16px;backdrop-filter:blur(5px)}
+.modal{background:var(--c1);border:1px solid var(--bd);border-radius:20px;padding:26px;
+  max-width:720px;width:100%;max-height:92vh;overflow-y:auto;box-shadow:0 24px 64px rgba(0,0,0,.6)}
+.mh{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:18px}
+.mtitle{font-size:16px;font-weight:700}
+.msub{color:var(--mu);font-size:12px;margin-top:2px}
+.mx{background:none;border:none;color:var(--mu);font-size:20px;cursor:pointer;line-height:1;padding:2px 6px}
+.mx:hover{color:var(--tx)}
+.legend{display:flex;gap:12px;margin-bottom:14px;flex-wrap:wrap}
+.li2{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--mu)}
+.ld{width:14px;height:14px;border-radius:3px}
+.ld.av{background:var(--c2);border:1px solid var(--bd)}
+.ld.sl{background:var(--or)}
+.ld.bk{background:#2A1508;border:1px solid #3D2510}
+.deck-lbl{font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--mu);margin:10px 0 7px;font-weight:600}
+.sgrid{display:grid;grid-template-columns:repeat(4,44px);gap:6px;margin-bottom:14px}
+.seat{width:44px;height:40px;border-radius:7px;border:1px solid var(--bd);background:var(--c2);
+  display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;
+  cursor:pointer;transition:.15s;color:var(--mu);user-select:none}
+.seat:hover:not(.bk){border-color:var(--or);color:var(--or)}
+.seat.sl{background:var(--or);border-color:var(--or);color:#fff}
+.seat.bk{background:#2A1508;border-color:#3D2510;color:#4A2010;cursor:not-allowed}
+/* BOOKING SUMMARY */
+.bsum{background:var(--c2);border-radius:12px;padding:14px;margin-top:12px}
+.sr{display:flex;justify-content:space-between;align-items:center;font-size:12px;margin-bottom:8px}
+.stot{display:flex;justify-content:space-between;font-size:15px;font-weight:700;
+  padding-top:10px;border-top:1px solid var(--bd)}
+.psel{background:var(--c1);border:1px solid var(--bd);color:var(--tx);border-radius:7px;
+  padding:4px 8px;font-size:12px;outline:none;font-family:'DM Sans',sans-serif;cursor:pointer}
+/* BOOKING CARDS */
+.bk{background:var(--c1);border:1px solid var(--bd);border-radius:16px;padding:18px 20px;
+  margin-bottom:12px;position:relative;overflow:hidden}
+.bk::before{content:'';position:absolute;top:0;left:0;width:4px;height:100%;background:var(--or)}
+.bk.cancelled::before{background:var(--rd)}
+.bkroute{display:flex;align-items:center;gap:8px;margin-bottom:14px;flex-wrap:wrap}
+.bkcity{font-size:16px;font-weight:700}
+.bkmeta{display:grid;grid-template-columns:repeat(auto-fit,minmax(115px,1fr));gap:8px;margin-bottom:12px}
+/* PROFILE */
+.profile-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.profile-card{background:var(--c1);border:1px solid var(--bd);border-radius:16px;padding:22px}
+.pcard-title{font-size:14px;font-weight:600;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.member-card{background:var(--c2);border:1px solid var(--bd);border-radius:12px;padding:14px;margin-bottom:10px;position:relative}
+.member-name{font-size:14px;font-weight:600;margin-bottom:3px}
+.member-meta{font-size:11px;color:var(--mu);line-height:1.6}
+.member-badge{position:absolute;top:12px;right:12px}
+.add-member-form{background:var(--c2);border:1px solid var(--bd);border-radius:12px;padding:16px;margin-top:12px}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+/* FARE TABLE */
+.fare-table{width:100%;border-collapse:collapse;font-size:12px;margin-top:8px}
+.fare-table th{text-align:left;padding:8px 10px;border-bottom:1px solid var(--bd);color:var(--mu);font-size:10px;text-transform:uppercase;letter-spacing:.08em}
+.fare-table td{padding:8px 10px;border-bottom:1px solid rgba(61,37,16,.4);vertical-align:middle}
+.fare-table tr:last-child td{border-bottom:none}
+/* CONCESSION INFO BOX */
+.cbox{border-radius:10px;padding:10px 14px;margin-bottom:12px;font-size:12px;line-height:1.6}
+.cbox.female{background:rgba(192,132,252,.1);border:1px solid rgba(192,132,252,.3);color:var(--pu)}
+.cbox.child{background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.3);color:var(--gn)}
+.cbox.senior{background:rgba(96,165,250,.1);border:1px solid rgba(96,165,250,.3);color:var(--bl)}
+.cbox.standard{background:rgba(255,107,0,.1);border:1px solid rgba(255,107,0,.25);color:var(--or)}
+/* TABS */
+.tabs{display:flex;gap:4px;background:var(--c2);border-radius:10px;padding:4px;margin-bottom:20px;width:fit-content}
+.tab{padding:7px 16px;border-radius:7px;font-size:13px;font-weight:500;cursor:pointer;transition:.2s;color:var(--mu);border:none;background:none;font-family:'DM Sans',sans-serif}
+.tab.active{background:var(--or);color:#fff}
+/* EMPTY + LOADER */
+.empty{text-align:center;padding:50px 24px;color:var(--mu)}
+.empty-ico{font-size:40px;margin-bottom:10px}
+.empty h3{font-size:16px;margin-bottom:4px;color:var(--tx)}
+.loader{display:flex;justify-content:center;padding:36px}
+.spin{width:30px;height:30px;border:3px solid var(--bd);border-top-color:var(--or);
+  border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+/* TOAST */
+.toast{position:fixed;bottom:24px;right:24px;padding:12px 18px;border-radius:12px;
+  font-size:13px;font-weight:500;z-index:999;animation:su .3s ease;
+  box-shadow:0 8px 24px rgba(0,0,0,.4);max-width:340px}
+.tok{background:#166534;color:#86EFAC;border:1px solid #22C55E}
+.terr{background:#7F1D1D;color:#FCA5A5;border:1px solid #EF4444}
+@keyframes su{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+/* DIVIDER */
+.div{height:1px;background:var(--bd);margin:16px 0}
+/* RESPONSIVE */
+@media(max-width:680px){
+  .sg{grid-template-columns:1fr 1fr}
+  .stats{grid-template-columns:repeat(3,1fr)}
+  .si:nth-child(3){border-right:none}
+  .si:nth-child(4),.si:nth-child(5){display:none}
+  nav{padding:10px 14px}
+  .profile-grid{grid-template-columns:1fr}
+  .form-row{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="brand" onclick="go('home')">
+    <div class="brand-icon">🚌</div>
+    <div>
+      <div class="brand-text">Maharashtra Bus Seva</div>
+      <div class="brand-sub">महाराष्ट्र बस सेवा</div>
+    </div>
+  </div>
+  <div class="nav-r">
+    <div id="ubar">
+      <strong id="nav-name"></strong>
+      <button class="nb ghost" onclick="go('bookings')">My Trips</button>
+      <button class="nb ghost" onclick="go('profile')">Profile</button>
+      <button class="nb out" onclick="doLogout()">Logout</button>
+    </div>
+    <div id="abar">
+      <button class="nb ghost" onclick="go('login')">Login</button>
+      <button class="nb sol" onclick="go('register')">Register</button>
+    </div>
+  </div>
+</nav>
+
+<!-- ══ HOME ══════════════════════════════════════════════════════ -->
+<div class="page active" id="page-home">
+  <div class="hero">
+    <div class="hero-badge">🎟️ Instant Seat Confirmation · Age & Gender Fares</div>
+    <h1>Your Journey,<br>Our Seva</h1>
+    <p class="hero-sub">Pune · Mumbai · Nashik · Nagpur · Aurangabad · Kolhapur &amp; more</p>
+    <div class="sc">
+      <div class="sg">
+        <div class="fg"><label>From</label>
+          <select id="sf">
+            <option value="">Select city…</option>
+            <option>Amravati</option><option>Aurangabad</option><option>Kolhapur</option>
+            <option>Mumbai</option><option>Nagpur</option><option>Nashik</option>
+            <option>Pune</option><option>Ratnagiri</option><option>Solapur</option>
+          </select>
+        </div>
+        <div class="fg"><label>To</label>
+          <select id="st2">
+            <option value="">Select city…</option>
+            <option>Amravati</option><option>Aurangabad</option><option>Kolhapur</option>
+            <option>Mumbai</option><option>Nagpur</option><option>Nashik</option>
+            <option>Pune</option><option>Ratnagiri</option><option>Solapur</option>
+          </select>
+        </div>
+        <div class="fg"><label>Date</label><input type="date" id="sd"/></div>
+        <button class="btn bp" onclick="doSearch()" style="height:42px;white-space:nowrap">Search 🔍</button>
+      </div>
+    </div>
+  </div>
+  <div class="stats">
+    <div class="si"><div class="sn">30</div><div class="sl">Routes</div></div>
+    <div class="si"><div class="sn">15</div><div class="sl">Buses</div></div>
+    <div class="si"><div class="sn">40+</div><div class="sl">Daily Trips</div></div>
+    <div class="si"><div class="sn">₹55</div><div class="sl">Kids Fare</div></div>
+    <div class="si"><div class="sn">₹66</div><div class="sl">Ladies Fare</div></div>
+  </div>
+  <div class="sec" id="res-sec" style="display:none">
+    <div class="sh">
+      <div class="st" id="res-title">Results</div>
+      <div id="fare-note" style="font-size:12px"></div>
+    </div>
+    <div id="res-list"></div>
+  </div>
+</div>
+
+<!-- ══ LOGIN ══════════════════════════════════════════════════════ -->
+<div class="page" id="page-login">
+  <div class="aw">
+    <div class="ac">
+      <div class="at">Welcome Back 👋</div>
+      <div class="as">Sign in to book your seat</div>
+      <div id="lerr"></div>
+      <div class="ig"><label>Email</label><input type="email" id="le" placeholder="rahul@example.com"/></div>
+      <div class="ig"><label>Password</label><input type="password" id="lp" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()"/></div>
+      <button class="btn bp bfw" onclick="doLogin()">Sign In →</button>
+      <div class="aswitch">No account? <a onclick="go('register')">Register here</a></div>
+      <div class="hint">
+        Demo accounts <strong>(password: password123)</strong><br>
+        👩 <strong>priya.deshmukh@gmail.com</strong> — Female, age 26 → ₹66 fare<br>
+        👦 <strong>arjun.b@gmail.com</strong> — Male, age 15 → ₹55 child fare<br>
+        👴 <strong>suresh.jadhav@yahoo.com</strong> — Male, 39 → Standard fare<br>
+        👩‍🦳 <strong>sunita.rane@gmail.com</strong> — Female 61 → Standard fare
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ REGISTER ════════════════════════════════════════════════════ -->
+<div class="page" id="page-register">
+  <div class="aw" style="max-width:520px">
+    <div class="ac">
+      <div class="at">Create Account</div>
+      <div class="as">Join Maharashtra Bus Seva</div>
+      <div id="rerr"></div>
+      <div class="form-row">
+        <div class="ig"><label>Full Name</label><input type="text" id="rn" placeholder="Rahul Patil"/></div>
+        <div class="ig"><label>Phone</label><input type="tel" id="rph" placeholder="9876543210"/></div>
+      </div>
+      <div class="ig"><label>Email</label><input type="email" id="re" placeholder="you@example.com"/></div>
+      <div class="form-row">
+        <div class="ig"><label>Gender</label>
+          <select id="rg" onchange="updateFarePreview()">
+            <option value="">Select…</option>
+            <option>Male</option><option>Female</option><option>Other</option>
+          </select>
+        </div>
+        <div class="ig"><label>Date of Birth</label><input type="date" id="rd" onchange="updateFarePreview()"/></div>
+      </div>
+      <div class="ig"><label>City</label>
+        <select id="rcy">
+          <option value="">Select city…</option>
+          <option>Amravati</option><option>Aurangabad</option><option>Kolhapur</option>
+          <option>Mumbai</option><option>Nagpur</option><option>Nashik</option>
+          <option>Pune</option><option>Ratnagiri</option><option>Solapur</option>
+        </select>
+      </div>
+      <div class="ig"><label>Password</label><input type="password" id="rpw" placeholder="Min 6 characters"/></div>
+      <div id="fare-preview" style="display:none" class="cbox standard"></div>
+      <button class="btn bp bfw" onclick="doRegister()">Create Account</button>
+      <div class="aswitch">Already registered? <a onclick="go('login')">Sign in</a></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MY BOOKINGS ════════════════════════════════════════════════ -->
+<div class="page" id="page-bookings">
+  <div class="sec" style="padding-top:34px">
+    <div class="sh">
+      <div class="st">🎫 My Bookings</div>
+      <button class="btn bg2 bsm" onclick="go('home')">← Search Trips</button>
+    </div>
+    <div id="bklist"></div>
+  </div>
+</div>
+
+<!-- ══ PROFILE ════════════════════════════════════════════════════ -->
+<div class="page" id="page-profile">
+  <div class="sec" style="padding-top:34px">
+    <div class="sh">
+      <div class="st">👤 My Profile</div>
+      <button class="btn bg2 bsm" onclick="go('home')">← Back</button>
+    </div>
+    <div id="profile-content"></div>
+  </div>
+</div>
+
+<!-- ══ SEAT MODAL ════════════════════════════════════════════════ -->
+<div class="ov" id="seat-ov" style="display:none" onclick="ovClose(event)">
+  <div class="modal">
+    <div class="mh">
+      <div><div class="mtitle" id="mt"></div><div class="msub" id="ms"></div></div>
+      <button class="mx" onclick="closeModal()">×</button>
+    </div>
+    <!-- passenger selector shown when user has family members -->
+    <div id="passenger-pick" style="display:none" class="cbox standard" style="margin-bottom:12px">
+      <div style="font-size:12px;font-weight:600;margin-bottom:8px">👥 Who is travelling?</div>
+      <div id="pax-list" style="display:flex;flex-wrap:wrap;gap:6px"></div>
+    </div>
+    <div id="concession-info"></div>
+    <div class="legend">
+      <div class="li2"><div class="ld av"></div>Available</div>
+      <div class="li2"><div class="ld sl"></div>Selected</div>
+      <div class="li2"><div class="ld bk"></div>Booked</div>
+    </div>
+    <div id="smap"></div>
+    <div id="bsum" style="display:none" class="bsum">
+      <div class="sr"><span>Seats Selected</span><span id="ss" style="color:var(--or)">—</span></div>
+      <div class="sr"><span>Fare / seat</span><span id="sf2" style="font-weight:700">—</span></div>
+      <div class="sr"><span>Fare Category</span><span id="scat">—</span></div>
+      <div class="sr">
+        <span>Payment</span>
+        <select class="psel" id="spm"><option>UPI</option><option>Card</option><option>Net Banking</option><option>Cash</option></select>
+      </div>
+      <div class="stot" style="margin-top:8px"><span>Total</span><span id="stot" style="color:var(--or)">—</span></div>
+      <button class="btn bp bfw" style="margin-top:12px" id="cbtn" onclick="confirmBooking()">Confirm Booking ✓</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════════════════════════════
+// MOCK DATABASE
+// ══════════════════════════════════════════════════════════════════
+const USERS = [
+  {id:1,  name:'Rahul Patil',     email:'rahul.patil@gmail.com',    phone:'9876543210', pw:'password123', gender:'Male',   dob:'1995-04-12', city:'Pune',       role:'passenger'},
+  {id:2,  name:'Priya Deshmukh',  email:'priya.deshmukh@gmail.com', phone:'9823456781', pw:'password123', gender:'Female', dob:'1998-07-22', city:'Mumbai',     role:'passenger'},
+  {id:3,  name:'Suresh Jadhav',   email:'suresh.jadhav@yahoo.com',  phone:'9012345678', pw:'password123', gender:'Male',   dob:'1985-11-03', city:'Nagpur',     role:'passenger'},
+  {id:4,  name:'Anita Kulkarni',  email:'anita.kulkarni@gmail.com', phone:'9765432109', pw:'password123', gender:'Female', dob:'2001-02-14', city:'Nashik',     role:'passenger'},
+  {id:5,  name:'Vijay Shinde',    email:'vijay.shinde@rediff.com',  phone:'9654321098', pw:'password123', gender:'Male',   dob:'1978-09-30', city:'Aurangabad', role:'passenger'},
+  {id:6,  name:'Meera Pawar',     email:'meera.pawar@gmail.com',    phone:'9543210987', pw:'password123', gender:'Female', dob:'2008-05-18', city:'Kolhapur',   role:'passenger'},
+  {id:7,  name:'Arjun Bhosale',   email:'arjun.b@gmail.com',        phone:'9432109876', pw:'password123', gender:'Male',   dob:'2009-12-01', city:'Pune',       role:'passenger'},
+  {id:8,  name:'Sunita Rane',     email:'sunita.rane@gmail.com',    phone:'9321098765', pw:'password123', gender:'Female', dob:'1963-08-25', city:'Mumbai',     role:'passenger'},
+  {id:9,  name:'Deepak More',     email:'deepak.more@gmail.com',    phone:'9210987654', pw:'password123', gender:'Male',   dob:'1990-03-07', city:'Pune',       role:'passenger'},
+  {id:10, name:'Kavita Nair',     email:'kavita.nair@gmail.com',    phone:'9109876543', pw:'password123', gender:'Female', dob:'2003-10-19', city:'Nashik',     role:'passenger'},
+  {id:11, name:'Rohit Gaikwad',   email:'rohit.g@gmail.com',        phone:'9098765432', pw:'password123', gender:'Male',   dob:'1992-06-15', city:'Nagpur',     role:'passenger'},
+  {id:12, name:'Sneha Wagh',      email:'sneha.wagh@gmail.com',     phone:'9987654321', pw:'password123', gender:'Female', dob:'1999-01-28', city:'Kolhapur',   role:'passenger'},
+  {id:13, name:'Aditya Chavan',   email:'aditya.c@gmail.com',       phone:'9876054321', pw:'password123', gender:'Male',   dob:'2010-07-04', city:'Aurangabad', role:'passenger'},
+  {id:14, name:'Pooja Salunkhe',  email:'pooja.s@gmail.com',        phone:'9875643210', pw:'password123', gender:'Female', dob:'1996-11-11', city:'Mumbai',     role:'passenger'},
+  {id:15, name:'Ganesh Desai',    email:'ganesh.d@gmail.com',       phone:'9865432100', pw:'password123', gender:'Male',   dob:'1960-03-15', city:'Solapur',    role:'passenger'},
+  {id:16, name:'Lata Joshi',      email:'lata.j@gmail.com',         phone:'9754321099', pw:'password123', gender:'Female', dob:'1961-09-20', city:'Amravati',   role:'passenger'},
+  {id:17, name:'Admin MSRTC',     email:'admin@msrtc.gov.in',       phone:'9000000001', pw:'admin123',    gender:'Male',   dob:'1980-01-01', city:'Mumbai',     role:'admin'},
+];
+
+// Family members: { userId -> [{name, gender, dob, relation}] }
+const FAMILY = {
+  1: [{name:'Sita Patil',   gender:'Female', dob:'1998-06-10', relation:'Wife'},
+      {name:'Aryan Patil',  gender:'Male',   dob:'2015-03-22', relation:'Son'}],
+  5: [{name:'Rekha Shinde', gender:'Female', dob:'1980-04-05', relation:'Wife'},
+      {name:'Om Shinde',    gender:'Male',   dob:'2012-11-30', relation:'Son'}],
+};
+
+const BUSES = [
+  // MSRTC Fleet
+  {id:1,  num:'MH-12-BT-1001', name:'Shivneri Express',    type:'Volvo AC',     seats:40, op:'MSRTC',          am:'WiFi · USB · Blanket · Water',    hasSleeper:false},
+  {id:2,  num:'MH-14-RT-2023', name:'Sahyadri Deluxe',     type:'AC Sleeper',   seats:36, op:'MSRTC',          am:'USB · Blanket · Reading Light',    hasSleeper:true},
+  {id:3,  num:'MH-04-NN-3045', name:'Konkan Queen',        type:'Sleeper',      seats:40, op:'Paulo Travels',  am:'Blanket · Reading Light · Pillow', hasSleeper:true},
+  {id:4,  num:'MH-20-ZZ-4567', name:'Deccan Warrior',      type:'Semi-Sleeper', seats:45, op:'VRL Travels',    am:'USB Charging · Fan',               hasSleeper:false},
+  {id:5,  num:'MH-01-AB-5890', name:'Vidarbha Express',    type:'Seater',       seats:50, op:'MSRTC',          am:'Fan · Water Bottle',               hasSleeper:false},
+  {id:6,  num:'MH-31-CD-6712', name:'Marathwada Cruiser',  type:'Volvo AC',     seats:40, op:'Neeta Tours',    am:'WiFi · USB · AC · Blanket',        hasSleeper:false},
+  {id:7,  num:'MH-09-EF-7834', name:'Pune-Mumbai Rocket',  type:'Volvo AC',     seats:40, op:'MSRTC',          am:'WiFi · USB · Snacks',              hasSleeper:false},
+  {id:8,  num:'MH-06-GH-8956', name:'Nashik Vaibhav',      type:'Semi-Sleeper', seats:45, op:'Orange Travels', am:'USB · Water Bottle',               hasSleeper:false},
+  {id:9,  num:'MH-11-IJ-9078', name:'Konkan Saikat',       type:'Sleeper',      seats:36, op:'SRS Travels',    am:'Blanket · Pillow · Curtain',       hasSleeper:true},
+  {id:10, num:'MH-25-KL-1234', name:'Amravati Express',    type:'Seater',       seats:50, op:'MSRTC',          am:'Fan · Water Bottle',               hasSleeper:false},
+  {id:11, num:'MH-33-MN-5678', name:'Satara Speedster',    type:'Volvo AC',     seats:40, op:'Paulo Travels',  am:'WiFi · USB · Blanket',             hasSleeper:false},
+  {id:12, num:'MH-17-OP-9012', name:'Ratnagiri Coastal',   type:'Semi-Sleeper', seats:45, op:'VRL Travels',    am:'USB · Scenic Windows',             hasSleeper:false},
+  {id:13, num:'MH-08-QR-3456', name:'Solapur Shaan',       type:'AC Sleeper',   seats:36, op:'Neeta Tours',    am:'AC · Blanket · Reading Light',     hasSleeper:true},
+  {id:14, num:'MH-22-ST-7890', name:'Osmanabad Ojas',      type:'Seater',       seats:50, op:'MSRTC',          am:'Fan · Water Bottle',               hasSleeper:false},
+  {id:15, num:'MH-39-UV-2345', name:'Akola Arrow',         type:'Volvo AC',     seats:40, op:'Orange Travels', am:'WiFi · USB · AC',                  hasSleeper:false},
+];
+
+const ROUTES = [
+  {id:1,  src:'Mumbai',     dst:'Pune',        km:149, fare:350},
+  {id:2,  src:'Pune',       dst:'Mumbai',      km:149, fare:350},
+  {id:3,  src:'Mumbai',     dst:'Nashik',      km:167, fare:400},
+  {id:4,  src:'Nashik',     dst:'Mumbai',      km:167, fare:400},
+  {id:5,  src:'Pune',       dst:'Kolhapur',    km:228, fare:520},
+  {id:6,  src:'Kolhapur',   dst:'Pune',        km:228, fare:520},
+  {id:7,  src:'Mumbai',     dst:'Aurangabad',  km:335, fare:750},
+  {id:8,  src:'Aurangabad', dst:'Mumbai',      km:335, fare:750},
+  {id:9,  src:'Pune',       dst:'Nagpur',      km:700, fare:1200},
+  {id:10, src:'Nagpur',     dst:'Pune',        km:700, fare:1200},
+  {id:11, src:'Mumbai',     dst:'Nagpur',      km:832, fare:1400},
+  {id:12, src:'Nashik',     dst:'Pune',        km:210, fare:480},
+  {id:13, src:'Pune',       dst:'Nashik',      km:210, fare:480},
+  {id:14, src:'Aurangabad', dst:'Pune',        km:235, fare:550},
+  {id:15, src:'Mumbai',     dst:'Kolhapur',    km:375, fare:800},
+  {id:16, src:'Nagpur',     dst:'Mumbai',      km:832, fare:1400},
+  {id:17, src:'Kolhapur',   dst:'Mumbai',      km:375, fare:800},
+  {id:18, src:'Nashik',     dst:'Aurangabad',  km:280, fare:620},
+  {id:19, src:'Aurangabad', dst:'Nashik',      km:280, fare:620},
+  {id:20, src:'Pune',       dst:'Solapur',     km:240, fare:540},
+  {id:21, src:'Solapur',    dst:'Pune',        km:240, fare:540},
+  {id:22, src:'Mumbai',     dst:'Ratnagiri',   km:330, fare:720},
+  {id:23, src:'Ratnagiri',  dst:'Mumbai',      km:330, fare:720},
+  {id:24, src:'Nagpur',     dst:'Aurangabad',  km:410, fare:880},
+  {id:25, src:'Aurangabad', dst:'Nagpur',      km:410, fare:880},
+  {id:26, src:'Pune',       dst:'Amravati',    km:460, fare:950},
+  {id:27, src:'Amravati',   dst:'Pune',        km:460, fare:950},
+  {id:28, src:'Mumbai',     dst:'Solapur',     km:400, fare:860},
+  {id:29, src:'Solapur',    dst:'Mumbai',      km:400, fare:860},
+  {id:30, src:'Nashik',     dst:'Nagpur',      km:640, fare:1150},
+];
+
+function td(d,h,m){const x=new Date();x.setDate(x.getDate()+d);x.setHours(h,m,0,0);return x;}
+const TRIPS = [
+  // Mumbai ↔ Pune (route 1 & 2) — multiple buses, multiple times
+  {id:1,  busId:1,  routeId:1,  dep:td(0,5,30),  arr:td(0,9,0),   fare:450},
+  {id:2,  busId:7,  routeId:1,  dep:td(0,8,0),   arr:td(0,11,30), fare:420},
+  {id:3,  busId:11, routeId:1,  dep:td(0,10,0),  arr:td(0,13,30), fare:480},
+  {id:4,  busId:7,  routeId:1,  dep:td(0,13,0),  arr:td(0,16,30), fare:400},
+  {id:5,  busId:1,  routeId:1,  dep:td(0,16,0),  arr:td(0,19,30), fare:440},
+  {id:6,  busId:3,  routeId:1,  dep:td(0,22,0),  arr:td(1,1,30),  fare:520},  // sleeper
+  {id:7,  busId:2,  routeId:2,  dep:td(0,6,0),   arr:td(0,9,30),  fare:450},
+  {id:8,  busId:7,  routeId:2,  dep:td(0,9,0),   arr:td(0,12,30), fare:420},
+  {id:9,  busId:11, routeId:2,  dep:td(0,15,0),  arr:td(0,18,30), fare:460},
+  {id:10, busId:9,  routeId:2,  dep:td(0,23,0),  arr:td(1,2,30),  fare:600},  // sleeper
+  // Mumbai ↔ Nashik (route 3 & 4)
+  {id:11, busId:4,  routeId:3,  dep:td(0,7,0),   arr:td(0,10,30), fare:500},
+  {id:12, busId:8,  routeId:3,  dep:td(0,14,0),  arr:td(0,17,30), fare:480},
+  {id:13, busId:3,  routeId:3,  dep:td(0,21,30), arr:td(1,1,0),   fare:650},  // sleeper
+  {id:14, busId:8,  routeId:4,  dep:td(0,7,30),  arr:td(0,11,0),  fare:490},
+  {id:15, busId:4,  routeId:4,  dep:td(0,16,0),  arr:td(0,19,30), fare:500},
+  // Pune ↔ Kolhapur (route 5 & 6)
+  {id:16, busId:6,  routeId:5,  dep:td(0,7,0),   arr:td(0,11,0),  fare:620},
+  {id:17, busId:11, routeId:5,  dep:td(0,15,0),  arr:td(0,19,0),  fare:600},
+  {id:18, busId:2,  routeId:5,  dep:td(0,22,0),  arr:td(1,2,0),   fare:780},  // sleeper
+  {id:19, busId:6,  routeId:6,  dep:td(0,8,0),   arr:td(0,12,0),  fare:620},
+  {id:20, busId:11, routeId:6,  dep:td(0,16,30), arr:td(0,20,30), fare:600},
+  // Mumbai ↔ Aurangabad (route 7 & 8)
+  {id:21, busId:6,  routeId:7,  dep:td(0,8,0),   arr:td(0,16,0),  fare:850},
+  {id:22, busId:13, routeId:7,  dep:td(0,21,0),  arr:td(1,5,0),   fare:1100}, // sleeper
+  {id:23, busId:5,  routeId:8,  dep:td(0,9,0),   arr:td(0,17,0),  fare:820},
+  // Pune ↔ Nagpur (route 9 & 10)
+  {id:24, busId:5,  routeId:9,  dep:td(0,17,0),  arr:td(1,5,0),   fare:1350},
+  {id:25, busId:2,  routeId:9,  dep:td(0,20,0),  arr:td(1,8,0),   fare:1500}, // sleeper
+  {id:26, busId:10, routeId:10, dep:td(0,18,0),  arr:td(1,6,0),   fare:1300},
+  // Mumbai ↔ Nagpur (route 11 & 16)
+  {id:27, busId:15, routeId:11, dep:td(0,8,0),   arr:td(0,20,0),  fare:1550},
+  {id:28, busId:9,  routeId:11, dep:td(0,19,0),  arr:td(1,7,0),   fare:1800}, // sleeper
+  {id:29, busId:15, routeId:16, dep:td(0,9,0),   arr:td(0,21,0),  fare:1550},
+  // Nashik ↔ Pune (route 12 & 13)
+  {id:30, busId:8,  routeId:12, dep:td(0,6,0),   arr:td(0,9,30),  fare:580},
+  {id:31, busId:4,  routeId:13, dep:td(0,7,30),  arr:td(0,11,0),  fare:560},
+  {id:32, busId:12, routeId:13, dep:td(0,14,0),  arr:td(0,17,30), fare:540},
+  // Aurangabad ↔ Pune (route 14)
+  {id:33, busId:14, routeId:14, dep:td(0,7,0),   arr:td(0,11,0),  fare:640},
+  {id:34, busId:6,  routeId:14, dep:td(0,16,0),  arr:td(0,20,0),  fare:660},
+  // Mumbai ↔ Kolhapur (route 15 & 17)
+  {id:35, busId:3,  routeId:15, dep:td(0,20,0),  arr:td(1,4,0),   fare:1050}, // sleeper
+  {id:36, busId:1,  routeId:17, dep:td(0,9,0),   arr:td(0,17,0),  fare:900},
+  // Nashik ↔ Aurangabad (route 18 & 19)
+  {id:37, busId:12, routeId:18, dep:td(0,8,0),   arr:td(0,13,0),  fare:720},
+  {id:38, busId:14, routeId:19, dep:td(0,9,0),   arr:td(0,14,0),  fare:720},
+  // Pune ↔ Solapur (route 20 & 21)
+  {id:39, busId:10, routeId:20, dep:td(0,8,0),   arr:td(0,12,30), fare:620},
+  {id:40, busId:5,  routeId:21, dep:td(0,9,0),   arr:td(0,13,30), fare:620},
+  // Mumbai ↔ Ratnagiri (route 22 & 23)
+  {id:41, busId:12, routeId:22, dep:td(0,7,0),   arr:td(0,13,0),  fare:820},
+  {id:42, busId:3,  routeId:22, dep:td(0,21,0),  arr:td(1,3,0),   fare:950},  // sleeper
+  {id:43, busId:12, routeId:23, dep:td(0,8,0),   arr:td(0,14,0),  fare:820},
+  // Nagpur ↔ Aurangabad (route 24 & 25)
+  {id:44, busId:10, routeId:24, dep:td(0,10,0),  arr:td(0,18,0),  fare:980},
+  {id:45, busId:13, routeId:24, dep:td(0,21,0),  arr:td(1,5,0),   fare:1200}, // sleeper
+  {id:46, busId:14, routeId:25, dep:td(0,11,0),  arr:td(0,19,0),  fare:980},
+  // Pune ↔ Amravati (route 26 & 27)
+  {id:47, busId:5,  routeId:26, dep:td(0,18,30), arr:td(1,3,0),   fare:1100},
+  {id:48, busId:10, routeId:27, dep:td(0,19,0),  arr:td(1,3,30),  fare:1100},
+  // Mumbai ↔ Solapur (route 28 & 29)
+  {id:49, busId:15, routeId:28, dep:td(0,9,0),   arr:td(0,16,30), fare:950},
+  {id:50, busId:6,  routeId:29, dep:td(0,10,0),  arr:td(0,17,30), fare:950},
+  // Nashik ↔ Nagpur (route 30)
+  {id:51, busId:15, routeId:30, dep:td(0,20,0),  arr:td(1,8,0),   fare:1300},
+  {id:52, busId:9,  routeId:30, dep:td(0,21,0),  arr:td(1,9,0),   fare:1500}, // sleeper
+  // Tomorrow repeats
+  {id:53, busId:1,  routeId:1,  dep:td(1,5,30),  arr:td(1,9,0),   fare:450},
+  {id:54, busId:7,  routeId:2,  dep:td(1,8,0),   arr:td(1,11,30), fare:420},
+  {id:55, busId:11, routeId:3,  dep:td(1,7,0),   arr:td(1,10,30), fare:490},
+  {id:56, busId:2,  routeId:5,  dep:td(1,22,0),  arr:td(2,2,0),   fare:780},
+  {id:57, busId:6,  routeId:7,  dep:td(1,8,0),   arr:td(1,16,0),  fare:850},
+  {id:58, busId:5,  routeId:9,  dep:td(1,17,0),  arr:td(2,5,0),   fare:1350},
+];
+
+// ══════════════════════════════════════════════════════════════════
+// FARE RULES
+// Normal bus (Seater, Semi-Sleeper, Volvo AC — lower deck only):
+//   • Female age 13–59   → ₹66 flat (Maharashtra Mahila concession)
+//   • Child  age < 13    → ₹55 flat
+//   • Senior age >= 60   → ₹66 flat (Senior Citizen concession, any gender)
+//   • Others             → standard fare
+// Sleeper / AC Sleeper (multi-deck):
+//   • All standard fare applies (no concession on sleeper coaches)
+// ══════════════════════════════════════════════════════════════════
+const FEMALE_FARE  = 66;
+const CHILD_FARE   = 55;
+const SENIOR_FARE  = 66;
+const SLEEPER_TYPES = ['Sleeper','AC Sleeper'];
+
+function calcAge(dob){
+  const d=new Date(dob), now=new Date();
+  let a=now.getFullYear()-d.getFullYear();
+  const m=now.getMonth()-d.getMonth();
+  if(m<0||(m===0&&now.getDate()<d.getDate()))a--;
+  return a;
+}
+
+function isSleeper(bus){
+  return SLEEPER_TYPES.includes(bus.type);
+}
+
+function getFareInfo(person, standardFare, bus){
+  // person = {name, gender, dob}
+  // If sleeper coach → always standard, no concession
+  if(bus && isSleeper(bus)){
+    return {
+      fare: standardFare,
+      category:'Standard',
+      label:`₹${standardFare}`,
+      color:'var(--or)', emoji:'🛏️',
+      note:`Sleeper coach — standard fare applies (no concessions on sleeper)`
+    };
+  }
+  const age=calcAge(person.dob);
+  // Senior citizen ≥60: ₹66 regardless of gender
+  if(age>=60){
+    return {fare:SENIOR_FARE, category:'Senior Citizen',
+      label:`₹${SENIOR_FARE} (Senior)`, color:'var(--bl)', emoji:'👴',
+      note:`Age ${age} — senior citizen (60+) concession: ₹${SENIOR_FARE}`};
+  }
+  // Child under 13: ₹55
+  if(age<13){
+    return {fare:CHILD_FARE, category:'Child',
+      label:`₹${CHILD_FARE} (Child)`, color:'var(--gn)', emoji:'👶',
+      note:`Age ${age} — child (under 13): ₹${CHILD_FARE} flat`};
+  }
+  // Female age 13–59: ₹66
+  if(person.gender==='Female' && age>=13 && age<60){
+    return {fare:FEMALE_FARE, category:'Ladies Concession',
+      label:`₹${FEMALE_FARE} (Ladies)`, color:'var(--pu)', emoji:'👩',
+      note:`Age ${age} — female 13–59, Maharashtra ladies concession: ₹${FEMALE_FARE}`};
+  }
+  // Everyone else: standard
+  return {fare:standardFare, category:'Standard',
+    label:`₹${standardFare}`, color:'var(--or)',
+    emoji: person.gender==='Female'?'👩‍🦳':'👨',
+    note:`Age ${age} — standard fare`};
+}
+
+// ══════════════════════════════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════════════════════════════
+let CU=null;       // current user object
+let AT=null;       // active trip context {trip, bus, route}
+let SEL=[];        // selected seats [{id, num}]
+let TRAVELLER=null;// who is travelling (CU or a family member)
+let NID=100, NBK=200;
+const DB_USERS=[...USERS];
+const DB_BOOKINGS=[];
+const DB_FAMILY={...FAMILY}; // userId -> [{name,gender,dob,relation}]
+const BOOKED={};  // tripId -> Set<seatId>
+// Seed some booked seats for realism
+[[6,[1001,1002]],[10,[9001,9002,9003]],[25,[2001,2002,2003]],[28,[9001]],[1,[1001,1002,1003]]]
+  .forEach(([t,ss])=>{BOOKED[t]=new Set(ss);});
+
+// ══════════════════════════════════════════════════════════════════
+// BOOT
+// ══════════════════════════════════════════════════════════════════
+(()=>{
+  const today=new Date().toISOString().split('T')[0];
+  document.getElementById('sd').value=today;
+  document.getElementById('sd').min=today;
+  document.getElementById('rd').max=today;
+  ['rg','rd'].forEach(id=>document.getElementById(id).addEventListener('change',updateFarePreview));
+})();
+
+// ══════════════════════════════════════════════════════════════════
+// NAVIGATION
+// ══════════════════════════════════════════════════════════════════
+function go(page){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-'+page).classList.add('active');
+  if(page==='bookings')renderBookings();
+  if(page==='profile')renderProfile();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function showUBar(){
+  document.getElementById('ubar').style.display='flex';
+  document.getElementById('abar').style.display='none';
+  document.getElementById('nav-name').textContent=CU.name.split(' ')[0];
+}
+function hideUBar(){
+  document.getElementById('ubar').style.display='none';
+  document.getElementById('abar').style.display='flex';
+}
+
+// ══════════════════════════════════════════════════════════════════
+// AUTH
+// ══════════════════════════════════════════════════════════════════
+function doLogin(){
+  const email=document.getElementById('le').value.trim();
+  const pw=document.getElementById('lp').value;
+  const err=document.getElementById('lerr'); err.innerHTML='';
+  if(!email||!pw){err.innerHTML='<div class="alert aerr">Please fill in both fields.</div>';return;}
+  const u=DB_USERS.find(x=>x.email===email&&x.pw===pw);
+  if(!u){err.innerHTML='<div class="alert aerr">⚠ Invalid email or password.</div>';return;}
+  CU=u; showUBar();
+  const fi=getFareInfo(u,350,null);
+  toast(`Welcome back, ${u.name.split(' ')[0]}! ${fi.emoji} (${fi.category})`,'ok');
+  go('home');
+}
+
+function doRegister(){
+  const name=document.getElementById('rn').value.trim();
+  const email=document.getElementById('re').value.trim();
+  const phone=document.getElementById('rph').value.trim();
+  const gender=document.getElementById('rg').value;
+  const dob=document.getElementById('rd').value;
+  const city=document.getElementById('rcy').value;
+  const pw=document.getElementById('rpw').value;
+  const err=document.getElementById('rerr'); err.innerHTML='';
+  if(!name||!email||!phone||!gender||!dob||!city||!pw)
+    {err.innerHTML='<div class="alert aerr">All fields are required.</div>';return;}
+  if(pw.length<6)
+    {err.innerHTML='<div class="alert aerr">Password must be at least 6 characters.</div>';return;}
+  if(DB_USERS.find(u=>u.email===email))
+    {err.innerHTML='<div class="alert aerr">Email already registered.</div>';return;}
+  const nu={id:++NID,name,email,phone,pw,gender,dob,city,role:'passenger'};
+  DB_USERS.push(nu); CU=nu; showUBar();
+  DB_FAMILY[nu.id]=[];
+  const fi=getFareInfo(nu,350,null);
+  toast(`Account created! ${fi.emoji} Your fare: ${fi.label}`,'ok');
+  go('home');
+}
+
+function doLogout(){CU=null;hideUBar();go('home');toast('Logged out. See you soon!','ok');}
+
+// Fare preview on register page
+function updateFarePreview(){
+  const gender=document.getElementById('rg').value;
+  const dob=document.getElementById('rd').value;
+  const box=document.getElementById('fare-preview');
+  if(!gender||!dob){box.style.display='none';return;}
+  const fi=getFareInfo({gender,dob},350,null);
+  box.className='cbox';
+  if(fi.category==='Ladies Concession')box.classList.add('female');
+  else if(fi.category==='Child')box.classList.add('child');
+  else if(fi.category==='Senior Citizen')box.classList.add('senior');
+  else box.classList.add('standard');
+  box.style.display='block';
+  box.innerHTML=`${fi.emoji} <strong>${fi.category}</strong> — ${fi.note}<br>Your fare on normal buses: <strong>${fi.label}</strong>`;
+}
+
+// ══════════════════════════════════════════════════════════════════
+// SEARCH
+// ══════════════════════════════════════════════════════════════════
+function doSearch(){
+  const src=document.getElementById('sf').value;
+  const dst=document.getElementById('st2').value;
+  const ds=document.getElementById('sd').value;
+  if(!src){toast('Please select a departure city','err');return;}
+  if(!dst){toast('Please select a destination city','err');return;}
+  if(!ds){toast('Please select a travel date','err');return;}
+  if(src===dst){toast('Source and destination cannot be the same','err');return;}
+
+  const selDate=new Date(ds);
+  const route=ROUTES.find(r=>r.src===src&&r.dst===dst);
+  if(!route){
+    document.getElementById('res-sec').style.display='block';
+    document.getElementById('res-title').textContent=`${src} → ${dst}`;
+    document.getElementById('res-list').innerHTML=`<div class="empty"><div class="empty-ico">🚌</div><h3>No route found</h3><p>No direct buses on this route yet.</p></div>`;
+    return;
+  }
+
+  const trips=TRIPS.filter(t=>{
+    if(t.routeId!==route.id)return false;
+    const td2=new Date(t.dep);
+    return td2.getFullYear()===selDate.getFullYear()&&
+           td2.getMonth()===selDate.getMonth()&&
+           td2.getDate()===selDate.getDate();
+  });
+
+  const sec=document.getElementById('res-sec');
+  const list=document.getElementById('res-list');
+  sec.style.display='block';
+  document.getElementById('res-title').textContent=`${src} → ${dst}`;
+
+  // Fare note
+  let fnote='';
+  if(CU){
+    const bus0=BUSES.find(b=>trips[0]&&b.id===trips[0].busId);
+    const fi=getFareInfo(CU, route.fare, bus0);
+    fnote=`${fi.emoji} Your fare: <strong style="color:${fi.color}">${fi.label}</strong> (${fi.category})`;
+  }
+  document.getElementById('fare-note').innerHTML=fnote;
+
+  if(!trips.length){
+    list.innerHTML=`<div class="empty"><div class="empty-ico">🕐</div><h3>No trips today</h3><p>Try tomorrow or check another route.</p></div>`;
+    sec.scrollIntoView({behavior:'smooth',block:'start'});
+    return;
+  }
+
+  list.innerHTML=trips.map(t=>{
+    const bus=BUSES.find(b=>b.id===t.busId);
+    const avail=bus.seats-(BOOKED[t.id]||new Set()).size;
+    const fi=CU?getFareInfo(CU,t.fare,bus):{fare:t.fare,label:`₹${t.fare}`,color:'var(--or)',category:'Standard',emoji:''};
+    const sleeperTag=isSleeper(bus)?`<span class="badge b-pu" style="margin-left:6px">🛏️ Sleeper</span>`:'';
+    const concTag=CU&&fi.category!=='Standard'
+      ?`<span style="font-size:11px;color:${fi.color}"> · Your fare: <strong>${fi.label}</strong></span>`:'';
+    return `<div class="tc" onclick="openModal(${t.id})">
+      <div class="tt">
+        <div class="rg2">
+          <div class="cy">${route.src}</div>
+          <div class="ar">→</div>
+          <div class="cy">${route.dst}</div>
+          <div class="du">${dur(t.dep,t.arr)}</div>
+          ${sleeperTag}
+        </div>
+        <div class="fg2">
+          <div class="fare">₹${t.fare} <span>/ seat</span></div>
+          ${concTag}
+          <div style="margin-top:4px">
+            ${avail>10?`<span class="badge b-gn">✓ ${avail} seats</span>`:avail>0?`<span class="badge b-gd">⚡ ${avail} left</span>`:'<span class="badge b-rd">✗ Full</span>'}
+          </div>
+        </div>
+      </div>
+      <div class="tm">
+        <div class="mi"><div class="ml">Departure</div><div class="mv">${ft(t.dep)}</div></div>
+        <div class="mi"><div class="ml">Arrival</div><div class="mv">${ft(t.arr)}</div></div>
+        <div class="mi"><div class="ml">Bus</div><div class="mv">${bus.name}</div></div>
+        <div class="mi"><div class="ml">Type</div><div class="mv"><span class="badge b-or">${bus.type}</span></div></div>
+        <div class="mi"><div class="ml">Operator</div><div class="mv">${bus.op}</div></div>
+        <div class="mi"><div class="ml">Amenities</div><div class="mv" style="color:var(--mu);font-size:11px">${bus.am}</div></div>
+      </div>
+    </div>`;
+  }).join('');
+  sec.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+// ══════════════════════════════════════════════════════════════════
+// SEAT MODAL
+// ══════════════════════════════════════════════════════════════════
+function openModal(tripId){
+  if(!CU){toast('Please login to book','err');go('login');return;}
+  const trip=TRIPS.find(t=>t.id===tripId);
+  const bus=BUSES.find(b=>b.id===trip.busId);
+  const route=ROUTES.find(r=>r.id===trip.routeId);
+  AT={trip,bus,route};
+  SEL=[];
+  TRAVELLER=CU; // default traveller = logged in user
+
+  document.getElementById('mt').textContent=`${route.src} → ${route.dst}`;
+  document.getElementById('ms').textContent=`${bus.name} · ${ft(trip.dep)} · ${bus.type}`;
+  document.getElementById('bsum').style.display='none';
+
+  // Passenger picker (if family members exist)
+  const fam=DB_FAMILY[CU.id]||[];
+  const ppick=document.getElementById('passenger-pick');
+  if(fam.length){
+    ppick.style.display='block';
+    const plist=document.getElementById('pax-list');
+    const all=[{...CU, relation:'You'},...fam.map(f=>({...f,id:'fam'}))];
+    plist.innerHTML=all.map((p,i)=>{
+      const fi=getFareInfo(p,trip.fare,bus);
+      return `<button class="btn bsm ${i===0?'bp':'bg2'}" id="pax-${i}"
+        onclick="selectTraveller(${i},${JSON.stringify(all).replace(/"/g,'&quot;')})"
+        style="font-size:11px">${fi.emoji} ${p.name.split(' ')[0]} · ${fi.label}</button>`;
+    }).join('');
+    ppick.style.display='block';
+  } else {
+    ppick.style.display='none';
+  }
+
+  // Concession info box
+  renderConcessionBox(CU, trip.fare, bus);
+  renderSeats(trip, bus);
+
+  document.getElementById('seat-ov').style.display='flex';
+  document.body.style.overflow='hidden';
+}
+
+function selectTraveller(idx, allPax){
+  TRAVELLER=allPax[idx];
+  SEL=[];
+  // Highlight active button
+  allPax.forEach((_,i)=>{
+    const btn=document.getElementById('pax-'+i);
+    if(btn){btn.className=`btn bsm ${i===idx?'bp':'bg2'}`;btn.style.fontSize='11px';}
+  });
+  renderConcessionBox(TRAVELLER, AT.trip.fare, AT.bus);
+  // Re-render seat map
+  renderSeats(AT.trip, AT.bus);
+  document.getElementById('bsum').style.display='none';
+}
+
+function renderConcessionBox(person, standardFare, bus){
+  const fi=getFareInfo(person, standardFare, bus);
+  const cbox=document.getElementById('concession-info');
+  let cls='cbox ';
+  if(fi.category==='Ladies Concession')cls+='female';
+  else if(fi.category==='Child')cls+='child';
+  else if(fi.category==='Senior Citizen')cls+='senior';
+  else cls+='standard';
+  cbox.className=cls;
+  cbox.innerHTML=`${fi.emoji} <strong>${person.name||person.full_name||'You'}</strong> · ${fi.note} · Fare: <strong>${fi.label}</strong>`;
+}
+
+function renderSeats(trip, bus){
+  function genSeats(busId,total){
+    const rows='ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+    const s=[];const perRow=4;const nr=Math.ceil(total/perRow);
+    const half=Math.ceil(nr/2);
+    for(let r=0;r<nr;r++)for(let c=0;c<4;c++){
+      const n=r*perRow+c+1; if(n>total)break;
+      s.push({id:busId*1000+n, num:rows[r]+(c+1), deck:r<half?'Lower':'Upper'});
+    }
+    return s;
+  }
+  const allSeats=genSeats(bus.id,bus.seats);
+  const booked=BOOKED[trip.id]||new Set();
+  const isSL=isSleeper(bus);
+  const lower=allSeats.filter(s=>s.deck==='Lower');
+  const upper=allSeats.filter(s=>s.deck==='Upper');
+  let html='';
+  const deck=(seats,label)=>{
+    if(!seats.length)return'';
+    let h=`<div class="deck-lbl">${label}</div><div class="sgrid">`;
+    seats.forEach(s=>{
+      const bk=booked.has(s.id);
+      h+=`<div class="seat ${bk?'bk':''}" data-id="${s.id}" data-num="${s.num}" onclick="toggleSeat(this,${bk})">${s.num}</div>`;
+    });
+    return h+'</div>';
+  };
+  html+=deck(lower, isSL?'🛏️ Lower Berth':'🪑 Lower Deck');
+  if(upper.length&&isSL) html+=deck(upper,'🛏️ Upper Berth');
+  else if(upper.length)  html+=deck(upper,'🪑 Upper Deck');
+  document.getElementById('smap').innerHTML=html;
+}
+
+function toggleSeat(el,isB){
+  if(isB)return;
+  const id=parseInt(el.dataset.id), num=el.dataset.num;
+  if(el.classList.contains('sl')){
+    el.classList.remove('sl'); SEL=SEL.filter(s=>s.id!==id);
+  } else {
+    el.classList.add('sl'); SEL.push({id,num});
+  }
+  updateSummary();
+}
+
+function updateSummary(){
+  const sum=document.getElementById('bsum');
+  if(!SEL.length){sum.style.display='none';return;}
+  const fi=getFareInfo(TRAVELLER||CU, AT.trip.fare, AT.bus);
+  sum.style.display='block';
+  document.getElementById('ss').textContent=SEL.map(s=>s.num).join(', ');
+  document.getElementById('sf2').innerHTML=`<span style="color:${fi.color};font-weight:700">${fi.label}</span>`;
+  document.getElementById('scat').textContent=fi.category;
+  document.getElementById('stot').textContent=`₹${(fi.fare*SEL.length).toFixed(2)}`;
+}
+
+function closeModal(){
+  document.getElementById('seat-ov').style.display='none';
+  document.body.style.overflow='';
+  SEL=[];AT=null;TRAVELLER=null;
+}
+function ovClose(e){if(e.target.id==='seat-ov')closeModal();}
+
+function confirmBooking(){
+  if(!SEL.length)return;
+  const btn=document.getElementById('cbtn');
+  btn.disabled=true; btn.textContent='Processing…';
+  setTimeout(()=>{
+    const traveller=TRAVELLER||CU;
+    const fi=getFareInfo(traveller, AT.trip.fare, AT.bus);
+    const total=fi.fare*SEL.length;
+    const payMode=document.getElementById('spm').value;
+    const bkId=++NBK;
+    if(!BOOKED[AT.trip.id])BOOKED[AT.trip.id]=new Set();
+    SEL.forEach(s=>BOOKED[AT.trip.id].add(s.id));
+    DB_BOOKINGS.push({
+      id:bkId, userId:CU.id, traveller:traveller.name||traveller.full_name,
+      tripId:AT.trip.id, trip:{...AT.trip}, bus:{...AT.bus}, route:{...AT.route},
+      seats:[...SEL], amount:total, fareCategory:fi.category, fareLabel:fi.label,
+      payMode, status:'Confirmed', date:new Date()
+    });
+    btn.disabled=false; btn.textContent='Confirm Booking ✓';
+    closeModal();
+    toast(`🎉 Booking #${bkId} confirmed — ${fi.emoji} ${fi.category} · ₹${total.toFixed(2)}`,'ok');
+    // refresh results page if visible
+    if(document.getElementById('res-sec').style.display!=='none') doSearch();
+  },700);
+}
+
+// ══════════════════════════════════════════════════════════════════
+// MY BOOKINGS
+// ══════════════════════════════════════════════════════════════════
+function renderBookings(){
+  const list=document.getElementById('bklist');
+  if(!CU){list.innerHTML='<div class="empty"><div class="empty-ico">🔒</div><h3>Please login</h3><p>Sign in to view bookings.</p></div>';return;}
+  const mine=DB_BOOKINGS.filter(b=>b.userId===CU.id);
+  if(!mine.length){list.innerHTML='<div class="empty"><div class="empty-ico">🎫</div><h3>No bookings yet</h3><p>Book a trip to see it here!</p></div>';return;}
+  list.innerHTML=mine.slice().reverse().map(b=>{
+    const catColor=b.fareCategory==='Ladies Concession'?'var(--pu)':b.fareCategory==='Child'?'var(--gn)':b.fareCategory==='Senior Citizen'?'var(--bl)':'var(--or)';
+    return `<div class="bk ${b.status==='Cancelled'?'cancelled':''}">
+      <div class="bkroute">
+        <div class="bkcity">${b.route.src}</div>
+        <span style="color:var(--or);font-size:16px">→</span>
+        <div class="bkcity">${b.route.dst}</div>
+        <span style="margin-left:6px;font-size:12px;color:var(--mu)">${isSleeper(b.bus)?'🛏️':''}</span>
+        <div style="margin-left:auto;display:flex;gap:6px;align-items:center">
+          <span class="badge" style="background:rgba(255,107,0,.15);color:${catColor};border:1px solid ${catColor}33">${b.fareLabel}</span>
+          ${b.status==='Confirmed'?'<span class="badge b-gn">✓ Confirmed</span>':'<span class="badge b-rd">✗ Cancelled</span>'}
+        </div>
+      </div>
+      <div class="bkmeta">
+        <div class="mi"><div class="ml">Booking #</div><div class="mv">#${b.id}</div></div>
+        <div class="mi"><div class="ml">Traveller</div><div class="mv">${b.traveller}</div></div>
+        <div class="mi"><div class="ml">Date</div><div class="mv">${fd(b.trip.dep)}</div></div>
+        <div class="mi"><div class="ml">Departs</div><div class="mv">${ft(b.trip.dep)}</div></div>
+        <div class="mi"><div class="ml">Bus</div><div class="mv">${b.bus.name}</div></div>
+        <div class="mi"><div class="ml">Seats</div><div class="mv">${b.seats.map(s=>s.num).join(', ')}</div></div>
+        <div class="mi"><div class="ml">Fare Type</div><div class="mv" style="color:${catColor}">${b.fareCategory}</div></div>
+        <div class="mi"><div class="ml">Amount Paid</div><div class="mv" style="color:var(--or);font-weight:700">₹${b.amount.toFixed(2)}</div></div>
+      </div>
+      ${b.status==='Confirmed'?`<button class="btn bd2 bsm" onclick="cancelBk(${b.id})">Cancel Booking</button>`:''}
+    </div>`;
+  }).join('');
+}
+
+function cancelBk(id){
+  if(!confirm('Cancel this booking?'))return;
+  const b=DB_BOOKINGS.find(x=>x.id===id); if(!b)return;
+  b.status='Cancelled';
+  if(BOOKED[b.tripId])b.seats.forEach(s=>BOOKED[b.tripId].delete(s.id));
+  toast(`Booking #${id} cancelled.`,'ok');
+  renderBookings();
+}
+
+// ══════════════════════════════════════════════════════════════════
+// PROFILE & FAMILY MEMBERS
+// ══════════════════════════════════════════════════════════════════
+function renderProfile(){
+  if(!CU){document.getElementById('profile-content').innerHTML='<div class="empty"><div class="empty-ico">🔒</div><h3>Please login</h3></div>';return;}
+  const fi=getFareInfo(CU,350,null);
+  const fam=DB_FAMILY[CU.id]||[];
+  // Fare rules table rows
+  const rules=[
+    {who:'Female (age 13–59)',fare:'₹66 flat','applies':'Normal bus only',color:'var(--pu)'},
+    {who:'Senior (60+)',fare:'₹66 flat',applies:'Normal bus only',color:'var(--bl)'},
+    {who:'Child (under 13)',fare:'₹55 flat',applies:'Normal bus only',color:'var(--gn)'},
+    {who:'All passengers',fare:'Standard',applies:'Sleeper / AC Sleeper',color:'var(--or)'},
+  ];
+  document.getElementById('profile-content').innerHTML=`
+    <div class="profile-grid">
+      <!-- My Info -->
+      <div class="profile-card">
+        <div class="pcard-title">👤 Account Details</div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div class="mi"><div class="ml">Name</div><div class="mv">${CU.name}</div></div>
+          <div class="mi"><div class="ml">Email</div><div class="mv">${CU.email}</div></div>
+          <div class="mi"><div class="ml">Phone</div><div class="mv">${CU.phone}</div></div>
+          <div class="mi"><div class="ml">Gender</div><div class="mv">${CU.gender}</div></div>
+          <div class="mi"><div class="ml">Date of Birth</div><div class="mv">${CU.dob}</div></div>
+          <div class="mi"><div class="ml">Age</div><div class="mv">${calcAge(CU.dob)} years</div></div>
+          <div class="mi"><div class="ml">City</div><div class="mv">${CU.city}</div></div>
+        </div>
+        <div class="div"></div>
+        <div class="cbox ${fi.category==='Ladies Concession'?'female':fi.category==='Child'?'child':fi.category==='Senior Citizen'?'senior':'standard'}" style="margin:0">
+          ${fi.emoji} <strong>Your Fare Category:</strong> ${fi.category}<br>${fi.note}
+        </div>
+      </div>
+
+      <!-- Fare Rules -->
+      <div class="profile-card">
+        <div class="pcard-title">💰 Fare Concession Rules</div>
+        <table class="fare-table">
+          <thead><tr><th>Passenger Type</th><th>Fare</th><th>Applicable On</th></tr></thead>
+          <tbody>
+            ${rules.map(r=>`<tr>
+              <td style="color:${r.color};font-weight:500">${r.who}</td>
+              <td style="font-weight:700;color:${r.color}">${r.fare}</td>
+              <td style="color:var(--mu);font-size:11px">${r.applies}</td>
+            </tr>`).join('')}
+          </tbody>
+        </table>
+        <div style="margin-top:12px;font-size:11px;color:var(--mu);line-height:1.7">
+          ℹ️ Sleeper &amp; AC Sleeper coaches always charge standard fare.<br>
+          ℹ️ Female concession applies to ages <strong>13–59</strong> only.<br>
+          ℹ️ Senior concession applies to <strong>any gender aged 60+</strong>.
+        </div>
+      </div>
+
+      <!-- Family Members -->
+      <div class="profile-card" style="grid-column:1/-1">
+        <div class="pcard-title">👨‍👩‍👧‍👦 Family Members
+          <span style="font-size:11px;color:var(--mu);font-weight:400;margin-left:4px">— book tickets for them with automatic fare calculation</span>
+        </div>
+        ${fam.length?fam.map((f,i)=>{
+          const ffi=getFareInfo(f,350,null);
+          return `<div class="member-card">
+            <div class="member-name">${ffi.emoji} ${f.name}</div>
+            <div class="member-meta">
+              ${f.relation} · ${f.gender} · DOB: ${f.dob} · Age: ${calcAge(f.dob)}<br>
+              Fare category: <strong style="color:${ffi.color}">${ffi.category} (${ffi.label} on normal buses)</strong>
+            </div>
+            <div class="member-badge"><button class="btn bd2 bsm" onclick="removeFamilyMember(${i})">Remove</button></div>
+          </div>`;
+        }).join(''):'<p style="color:var(--mu);font-size:13px;margin-bottom:12px">No family members added yet.</p>'}
+        <div class="add-member-form" id="add-fm-form">
+          <div style="font-size:13px;font-weight:600;margin-bottom:12px">➕ Add Family Member</div>
+          <div class="form-row">
+            <div class="ig"><label>Name</label><input type="text" id="fm-name" placeholder="Sita Patil"/></div>
+            <div class="ig"><label>Relation</label>
+              <select id="fm-rel">
+                <option>Spouse</option><option>Son</option><option>Daughter</option>
+                <option>Father</option><option>Mother</option><option>Sibling</option><option>Other</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="ig"><label>Gender</label>
+              <select id="fm-gender" onchange="previewFamilyFare()"><option value="">Select…</option><option>Male</option><option>Female</option><option>Other</option></select>
+            </div>
+            <div class="ig"><label>Date of Birth</label><input type="date" id="fm-dob" max="${new Date().toISOString().split('T')[0]}" onchange="previewFamilyFare()"/></div>
+          </div>
+          <div id="fm-preview" style="display:none;margin-bottom:10px"></div>
+          <button class="btn bp bsm" onclick="addFamilyMember()">Add Member</button>
+        </div>
+      </div>
+    </div>`;
+}
+
+function previewFamilyFare(){
+  const g=document.getElementById('fm-gender').value;
+  const d=document.getElementById('fm-dob').value;
+  const box=document.getElementById('fm-preview');
+  if(!g||!d){box.style.display='none';return;}
+  const fi=getFareInfo({gender:g,dob:d},350,null);
+  box.className='cbox '+(fi.category==='Ladies Concession'?'female':fi.category==='Child'?'child':fi.category==='Senior Citizen'?'senior':'standard');
+  box.style.display='block';
+  box.innerHTML=`${fi.emoji} ${fi.category} — ${fi.note}`;
+}
+
+function addFamilyMember(){
+  const name=document.getElementById('fm-name').value.trim();
+  const rel=document.getElementById('fm-rel').value;
+  const gender=document.getElementById('fm-gender').value;
+  const dob=document.getElementById('fm-dob').value;
+  if(!name||!gender||!dob){toast('Please fill all family member fields','err');return;}
+  if(!DB_FAMILY[CU.id])DB_FAMILY[CU.id]=[];
+  DB_FAMILY[CU.id].push({name,relation:rel,gender,dob});
+  toast(`${name} added to your family!`,'ok');
+  // clear
+  ['fm-name','fm-dob'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('fm-gender').value='';
+  document.getElementById('fm-preview').style.display='none';
+  renderProfile();
+}
+
+function removeFamilyMember(idx){
+  if(!confirm('Remove this family member?'))return;
+  DB_FAMILY[CU.id].splice(idx,1);
+  toast('Family member removed','ok');
+  renderProfile();
+}
+
+// ══════════════════════════════════════════════════════════════════
+// UTILS
+// ══════════════════════════════════════════════════════════════════
+function ft(dt){return new Date(dt).toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit',hour12:true});}
+function fd(dt){return new Date(dt).toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'});}
+function dur(dep,arr){const m=Math.round((new Date(arr)-new Date(dep))/60000);return`${Math.floor(m/60)}h ${m%60}m`;}
+function toast(msg,type='ok'){
+  const el=document.createElement('div');
+  el.className=`toast t${type}`;
+  el.textContent=msg;
+  document.body.appendChild(el);
+  setTimeout(()=>el.remove(),3800);
+}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
+</script>
+</body>
+</html>
