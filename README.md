@@ -59,7 +59,6 @@ export DB_NAME=bus_reservation
 ```bash
 python app.py
 ```
-Visit: http://localhost:5000
 
 ## Features
 
